@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence  } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, 
@@ -34,12 +34,21 @@ const Admin = () => {
     features: ['']
   });
 
+  // useEffect(() => {
+  //   const isAuthenticated = localStorage.getItem('isAuthenticated');
+  //   if (!isAuthenticated) {
+  //     navigate('/login');
+  //   }
+  // }, [navigate]);
+
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
+
   useEffect(() => {
-    const isAuthenticated = localStorage.getItem('isAuthenticated');
-    if (!isAuthenticated) {
-      navigate('/login');
-    }
-  }, [navigate]);
+    const onResize = () => setIsDesktop(window.innerWidth >= 1024);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
 
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated');
@@ -48,7 +57,7 @@ const Admin = () => {
 
   const showMessage = (text, type = 'success') => {
     setMessage({ text, type });
-    setTimeout(() => setMessage(''), 3000);
+    setTimeout(() => setMessage(null), 3000);
   };
 
   const handleSubmit = (e) => {
@@ -62,10 +71,14 @@ const Admin = () => {
       ));
       showMessage('Servicio actualizado con éxito');
     } else {
-      const newService = {
-        ...formData,
-        id: Math.max(...services.map(s => s.id)) + 1
-      };
+      // const newService = {
+      //   ...formData,
+      //   id: Math.max(...services.map(s => s.id)) + 1
+      // };
+      const nextId = services.length ? Math.max(...services.map(s => s.id)) + 1 : 1;
+      const newService = { ...formData, id: nextId };
+
+
       setServices([...services, newService]);
       showMessage('Servicio creado con éxito');
     }
@@ -130,7 +143,7 @@ const Admin = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100 flex">
+    <div className="flex min-h-screen bg-gray-100">
       <motion.div 
         className={`bg-white shadow-lg ${sidebarOpen ? 'w-64' : 'w-16'} transition-all duration-300 fixed h-full z-20 lg:relative lg:w-64`}
         initial={{ x: -100 }}
@@ -139,10 +152,10 @@ const Admin = () => {
       >
         <div className="p-4 border-b">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+            <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl">
               <Settings className="w-6 h-6 text-white" />
             </div>
-            {(sidebarOpen || window.innerWidth >= 1024) && (
+            {(sidebarOpen || isDesktop) && (
               <h2 className="text-xl font-bold text-gray-900">Admin Panel</h2>
             )}
           </div>
@@ -164,7 +177,7 @@ const Admin = () => {
                 whileTap={{ scale: 0.98 }}
               >
                 <Icon className="w-5 h-5" />
-                {(sidebarOpen || window.innerWidth >= 1024) && (
+                {(sidebarOpen || isDesktop) && (
                   <span className="font-medium">{item.name}</span>
                 )}
               </motion.button>
@@ -175,20 +188,20 @@ const Admin = () => {
         <div className="absolute bottom-4 left-4 right-4">
           <motion.button
             onClick={handleLogout}
-            className="w-full bg-red-500 text-white p-3 rounded-xl font-medium hover:bg-red-600 transition-colors duration-300"
+            className="w-full p-3 font-medium text-white transition-colors duration-300 bg-red-500 rounded-xl hover:bg-red-600"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            {(sidebarOpen || window.innerWidth >= 1024) ? 'Cerrar Sesión' : 'Salir'}
+            {(sidebarOpen || isDesktop) ? 'Cerrar Sesión' : 'Salir'}
           </motion.button>
         </div>
       </motion.div>
 
-      <div className="flex-1 lg:ml-0 ml-16">
-        <div className="bg-white shadow-sm p-4 flex items-center justify-between">
+      <div className="flex-1 ml-16 lg:ml-0">
+        <div className="flex items-center justify-between p-4 bg-white shadow-sm">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="lg:hidden p-2 rounded-lg hover:bg-gray-100"
+            className="p-2 rounded-lg lg:hidden hover:bg-gray-100"
           >
             <Menu className="w-6 h-6" />
           </button>
@@ -200,8 +213,10 @@ const Admin = () => {
         </div>
 
         <div className="p-6">
+          <AnimatePresence>
           {message && (
             <motion.div
+              key="flash"
               className={`mb-6 p-4 rounded-xl flex items-center gap-2 ${
                 message.type === 'success' 
                   ? 'bg-green-50 text-green-700 border border-green-200' 
@@ -215,26 +230,29 @@ const Admin = () => {
               {message.text}
             </motion.div>
           )}
-
+          </AnimatePresence>
+          <AnimatePresence mode="wait">
           {activeTab === 'dashboard' && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+            key="tab-dashboard"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.25 }}
             >
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div className="bg-white p-6 rounded-2xl shadow-lg">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Total Servicios</h3>
+              <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-3">
+                <div className="p-6 bg-white shadow-lg rounded-2xl">
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900">Total Servicios</h3>
                   <p className="text-3xl font-bold text-blue-600">{services.length}</p>
                 </div>
-                <div className="bg-white p-6 rounded-2xl shadow-lg">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">En Promoción</h3>
+                <div className="p-6 bg-white shadow-lg rounded-2xl">
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900">En Promoción</h3>
                   <p className="text-3xl font-bold text-green-600">
                     {services.filter(s => s.promotion).length}
                   </p>
                 </div>
-                <div className="bg-white p-6 rounded-2xl shadow-lg">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Disponibles</h3>
+                <div className="p-6 bg-white shadow-lg rounded-2xl">
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900">Disponibles</h3>
                   <p className="text-3xl font-bold text-purple-600">{services.length}</p>
                 </div>
               </div>
@@ -243,15 +261,17 @@ const Admin = () => {
 
           {activeTab === 'services' && (
             <motion.div
+               key="tab-services"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.25 }}
             >
-              <div className="flex justify-between items-center mb-6">
+              <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-gray-900">Lista de Servicios</h2>
                 <motion.button
                   onClick={() => setShowForm(true)}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2 hover:shadow-lg transition-all duration-300"
+                  className="flex items-center gap-2 px-6 py-3 font-semibold text-white transition-all duration-300 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl hover:shadow-lg"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -262,16 +282,16 @@ const Admin = () => {
 
               {showForm && (
                 <motion.div
-                  className="bg-white p-6 rounded-2xl shadow-lg mb-6"
+                  className="p-6 mb-6 bg-white shadow-lg rounded-2xl"
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   transition={{ duration: 0.5 }}
                 >
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">
+                  <h3 className="mb-4 text-lg font-bold text-gray-900">
                     {editingService ? 'Editar Servicio' : 'Nuevo Servicio'}
                   </h3>
                   <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                       <input
                         type="text"
                         placeholder="Nombre del servicio"
@@ -303,7 +323,7 @@ const Admin = () => {
                       placeholder="Descripción del servicio"
                       value={formData.description}
                       onChange={(e) => setFormData({...formData, description: e.target.value})}
-                      className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 h-24"
+                      className="w-full h-24 p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                     />
                     
@@ -324,13 +344,13 @@ const Admin = () => {
                         onChange={(e) => setFormData({...formData, promotion: e.target.checked})}
                         className="w-4 h-4 text-blue-600"
                       />
-                      <label htmlFor="promotion" className="text-gray-700 font-medium">
+                      <label htmlFor="promotion" className="font-medium text-gray-700">
                         En promoción
                       </label>
                     </div>
 
                     <div>
-                      <label className="block text-gray-700 font-medium mb-2">Características:</label>
+                      <label className="block mb-2 font-medium text-gray-700">Características:</label>
                       {formData.features.map((feature, index) => (
                         <div key={index} className="flex gap-2 mb-2">
                           <input
@@ -354,7 +374,7 @@ const Admin = () => {
                       <button
                         type="button"
                         onClick={addFeature}
-                        className="text-blue-600 hover:text-blue-700 font-medium"
+                        className="font-medium text-blue-600 hover:text-blue-700"
                       >
                         + Agregar característica
                       </button>
@@ -363,14 +383,14 @@ const Admin = () => {
                     <div className="flex gap-4">
                       <button
                         type="submit"
-                        className="bg-green-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-600 transition-colors duration-300"
+                        className="px-6 py-3 font-semibold text-white transition-colors duration-300 bg-green-500 rounded-xl hover:bg-green-600"
                       >
                         {editingService ? 'Actualizar' : 'Crear'}
                       </button>
                       <button
                         type="button"
                         onClick={resetForm}
-                        className="bg-gray-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-gray-600 transition-colors duration-300"
+                        className="px-6 py-3 font-semibold text-white transition-colors duration-300 bg-gray-500 rounded-xl hover:bg-gray-600"
                       >
                         Cancelar
                       </button>
@@ -379,33 +399,29 @@ const Admin = () => {
                 </motion.div>
               )}
 
-              <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+              <div className="overflow-hidden bg-white shadow-lg rounded-2xl">
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Nombre</th>
-                        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Precio</th>
-                        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Disponibilidad</th>
-                        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Promoción</th>
-                        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Acciones</th>
+                        <th className="px-6 py-4 text-sm font-semibold text-left text-gray-900">Nombre</th>
+                        <th className="px-6 py-4 text-sm font-semibold text-left text-gray-900">Precio</th>
+                        <th className="px-6 py-4 text-sm font-semibold text-left text-gray-900">Disponibilidad</th>
+                        <th className="px-6 py-4 text-sm font-semibold text-left text-gray-900">Promoción</th>
+                        <th className="px-6 py-4 text-sm font-semibold text-left text-gray-900">Acciones</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                       {services.map((service) => (
-                        <motion.tr
-                          key={service.id}
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 0.3 }}
-                          className="hover:bg-gray-50"
-                        >
+       
+                        <tr key={service.id} className="hover:bg-gray-50">
+
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-3">
                               <img
                                 src={service.image}
                                 alt={service.name}
-                                className="w-12 h-12 rounded-lg object-cover"
+                                className="object-cover w-12 h-12 rounded-lg"
                               />
                               <span className="font-medium text-gray-900">{service.name}</span>
                             </div>
@@ -425,7 +441,7 @@ const Admin = () => {
                             <div className="flex gap-2">
                               <motion.button
                                 onClick={() => handleEdit(service)}
-                                className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-300"
+                                className="p-2 text-blue-600 transition-colors duration-300 rounded-lg hover:bg-blue-50"
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                               >
@@ -433,7 +449,7 @@ const Admin = () => {
                               </motion.button>
                               <motion.button
                                 onClick={() => handleDelete(service.id)}
-                                className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-300"
+                                className="p-2 text-red-600 transition-colors duration-300 rounded-lg hover:bg-red-50"
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                               >
@@ -441,7 +457,7 @@ const Admin = () => {
                               </motion.button>
                             </div>
                           </td>
-                        </motion.tr>
+                        </tr>
                       ))}
                     </tbody>
                   </table>
@@ -452,16 +468,20 @@ const Admin = () => {
 
           {activeTab === 'users' && (
             <motion.div
+              key="tab-users"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="bg-white p-8 rounded-2xl shadow-lg text-center"
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.25 }}
+              className="p-8 text-center bg-white shadow-lg rounded-2xl"
             >
-              <User className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Gestión de Usuarios</h3>
+              <User className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+              <h3 className="mb-2 text-xl font-bold text-gray-900">Gestión de Usuarios</h3>
               <p className="text-gray-600">Esta funcionalidad estará disponible próximamente.</p>
             </motion.div>
           )}
+
+          </AnimatePresence>
         </div>
       </div>
     </div>
