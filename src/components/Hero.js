@@ -46,15 +46,15 @@ const Hero = () => {
           transition={{ duration: 1 }}
         >
           <div 
-            className="w-full h-full bg-cover bg-center bg-no-repeat"
+            className="w-full h-full bg-center bg-no-repeat bg-cover"
             style={{ backgroundImage: `url(${slides[currentSlide].image})` }}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
         </motion.div>
       </AnimatePresence>
 
-      <div className="relative z-10 h-full flex items-center">
-        <div className="container mx-auto px-4">
+      <div className="relative z-10 flex items-center h-full">
+        <div className="container px-4 mx-auto">
           <div className="max-w-3xl">
             <motion.div
               key={`content-${currentSlide}`}
@@ -70,11 +70,11 @@ const Hero = () => {
                 transition={{ duration: 0.6, delay: 0.5 }}
               >
                 <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                <span className="text-yellow-400 font-semibold">Tecnología Premium</span>
+                <span className="font-semibold text-yellow-400">Tecnología Premium</span>
               </motion.div>
 
               <motion.h1 
-                className="text-5xl md:text-7xl font-bold mb-6 leading-tight"
+                className="mb-6 text-5xl font-bold leading-tight md:text-7xl"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
@@ -83,7 +83,7 @@ const Hero = () => {
               </motion.h1>
 
               <motion.h2 
-                className="text-2xl md:text-3xl text-blue-400 font-semibold mb-4"
+                className="mb-4 text-2xl font-semibold text-blue-400 md:text-3xl"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6 }}
@@ -92,7 +92,7 @@ const Hero = () => {
               </motion.h2>
 
               <motion.p 
-                className="text-xl text-gray-300 mb-8 leading-relaxed"
+                className="mb-8 text-xl leading-relaxed text-gray-300"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.7 }}
@@ -101,14 +101,14 @@ const Hero = () => {
               </motion.p>
 
               <motion.div 
-                className="flex flex-col sm:flex-row gap-4"
+                className="flex flex-col gap-4 sm:flex-row"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.8 }}
               >
                 <Link to="/servicios">
                   <motion.button
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center gap-3 hover:shadow-2xl transition-all duration-300"
+                    className="flex items-center gap-3 px-8 py-4 text-lg font-semibold text-white transition-all duration-300 bg-gradient-to-r from-blue-950 from-10%  to-lime-500 to-100% rounded-xl hover:shadow-2xl"
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -118,7 +118,7 @@ const Hero = () => {
                 </Link>
 
                 <motion.button
-                  className="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center gap-3 hover:bg-white hover:text-gray-900 transition-all duration-300"
+                  className="flex items-center gap-3 px-8 py-4 text-lg font-semibold text-white transition-all duration-300 border-2 border-white rounded-xl hover:bg-white hover:text-gray-900"
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -131,7 +131,7 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-3">
+      <div className="absolute flex gap-3 transform -translate-x-1/2 bottom-8 left-1/2">
         {slides.map((_, index) => (
           <motion.button
             key={index}
@@ -146,7 +146,7 @@ const Hero = () => {
       </div>
 
       <motion.div 
-        className="absolute bottom-8 right-8 flex items-center gap-2 text-white"
+        className="absolute flex items-center gap-2 text-white bottom-8 right-8"
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, delay: 1 }}

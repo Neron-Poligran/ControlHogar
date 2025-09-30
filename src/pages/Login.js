@@ -51,7 +51,7 @@ const Login = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl">
+          <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-950 from-10%  to-lime-500 to-100% rounded-2xl">
             <User className="w-8 h-8 text-white" />
           </div>
           <h2 className="mb-2 text-3xl font-bold text-gray-900">
@@ -132,7 +132,7 @@ const Login = () => {
             className={`w-full py-3 px-6 rounded-xl font-semibold text-white transition-all duration-300 ${
               isLoading
                 ? "bg-gray-400 cursor-not-allowed"
-                : "bg-gradient-to-r from-blue-600 to-purple-600 hover:shadow-lg hover:scale-105"
+                : "bg-gradient-to-r from-blue-950 from-10%  to-lime-500 to-100% hover:shadow-lg hover:scale-105"
             }`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

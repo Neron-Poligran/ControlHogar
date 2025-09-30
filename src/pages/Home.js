@@ -45,7 +45,7 @@ const Home = () => {
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               ¿Quiénes Somos?
             </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-8"></div>
+            <div className="w-24 h-1 bg-gradient-to-r from-blue-950 from-10%  to-lime-500 to-100% mx-auto mb-8"></div>
             <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
               En <span className="font-bold text-blue-600">ControlHogar</span> transformamos espacios tradicionales 
               en hogares inteligentes del futuro. Nuestra misión es hacer que la tecnología domótica sea 
@@ -67,7 +67,7 @@ const Home = () => {
                   whileHover={{ y: -10 }}
                 >
                   <motion.div 
-                    className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                    className="w-16 h-16 bg-gradient-to-br from-blue-950 from-10%  to-lime-500 to-100% rounded-2xl flex items-center justify-center mx-auto mb-6"
                     whileHover={{ scale: 1.1, rotate: 5 }}
                   >
                     <Icon className="w-8 h-8 text-white" />
@@ -94,7 +94,7 @@ const Home = () => {
             </p>
             <Link to="/servicios">
               <motion.button
-                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center gap-3 mx-auto hover:shadow-2xl transition-all duration-300"
+                className="bg-gradient-to-r from-blue-950 from-10%  to-lime-500 to-100% text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center gap-3 mx-auto hover:shadow-2xl transition-all duration-300"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >

@@ -138,7 +138,7 @@ const ServiceDetail = () => {
               </div>
 
               <motion.button
-                className="w-full px-8 py-4 text-lg font-bold text-white transition-all duration-300 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl hover:shadow-2xl"
+                className="w-full px-8 py-4 text-lg font-bold text-white transition-all duration-300 bg-gradient-to-r from-blue-950 from-10%  to-lime-500 to-100% rounded-xl hover:shadow-2xl"
                 whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
               >

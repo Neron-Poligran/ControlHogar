@@ -17,7 +17,7 @@ const Services = () => {
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Nuestros Servicios
           </h1>
-          <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-8"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-950 from-10%  to-lime-500 to-100% mx-auto mb-8"></div>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Soluciones integrales de domótica para transformar tu hogar en un espacio inteligente, 
             seguro y eficiente. Cada servicio incluye instalación profesional y garantía completa.
@@ -61,7 +61,7 @@ const Services = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white">
+          <div className="bg-gradient-to-r from-blue-950 from-10%  to-lime-500 to-100% rounded-2xl p-8 text-white">
             <h3 className="text-2xl font-bold mb-4">¿No encuentras lo que buscas?</h3>
             <p className="text-lg mb-6 opacity-90">
               Contáctanos para soluciones personalizadas adaptadas a tus necesidades específicas.

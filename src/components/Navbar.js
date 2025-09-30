@@ -49,7 +49,7 @@ const Navbar = () => {
                     to={item.path}
                     className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
                       isActive
-                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                        ? 'bg-gradient-to-r from-blue-950 from-10%  to-lime-500 to-100% text-white shadow-lg'
                         : 'text-gray-700 hover:bg-gray-100 hover:text-blue-600'
                     }`}
                   >
@@ -88,7 +88,7 @@ const Navbar = () => {
                   onClick={() => setIsOpen(false)}
                   className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 ${
                     isActive
-                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
+                      ? 'bg-gradient-to-r from-blue-950 from-10%  to-lime-500 to-100% text-white'
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >
