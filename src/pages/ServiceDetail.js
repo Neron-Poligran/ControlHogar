@@ -4,15 +4,24 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Check, Star, Shield, Clock } from 'lucide-react';
 import { servicesData } from '../data/services';
 
+const resolveImg = (p) => {
+  if (!p) return '';
+  if (/^(https?:)?\/\//i.test(p)) return p;
+  const base = process.env.PUBLIC_URL || '';
+  const path = p.startsWith('/') ? p : `/${p}`;
+  return `${base}${path}`;
+};
+
+
 const ServiceDetail = () => {
   const { id } = useParams();
   const service = servicesData.find(s => s.id === parseInt(id));
 
   if (!service) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Servicio no encontrado</h2>
+          <h2 className="mb-4 text-2xl font-bold text-gray-900">Servicio no encontrado</h2>
           <Link to="/servicios" className="text-blue-600 hover:underline">
             Volver al catálogo
           </Link>
@@ -22,8 +31,8 @@ const ServiceDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white py-20">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen py-20 bg-gradient-to-br from-gray-50 to-white">
+      <div className="container px-4 mx-auto">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -32,28 +41,28 @@ const ServiceDetail = () => {
         >
           <Link 
             to="/servicios"
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors duration-300"
+            className="inline-flex items-center gap-2 font-medium text-blue-600 transition-colors duration-300 hover:text-blue-700"
           >
             <ArrowLeft className="w-5 h-5" />
             Volver al Catálogo
           </Link>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+            <div className="relative overflow-hidden shadow-2xl rounded-2xl">
               <img
-                src={service.image}
+                src={resolveImg(service.image)}
                 alt={service.name}
-                className="w-full h-96 object-cover"
+                className="object-cover w-full h-96"
               />
               {service.promotion && (
                 <motion.div 
-                  className="absolute top-6 right-6 bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-2 rounded-full font-bold flex items-center gap-2"
+                  className="absolute flex items-center gap-2 px-4 py-2 font-bold text-white rounded-full top-6 right-6 bg-gradient-to-r from-red-500 to-pink-500"
                   initial={{ scale: 0, rotate: -45 }}
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
@@ -72,7 +81,7 @@ const ServiceDetail = () => {
             className="space-y-6"
           >
             <div>
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">
+              <h1 className="mb-4 text-4xl font-bold text-gray-900">
                 {service.name}
               </h1>
               <div className="flex items-center gap-4 mb-6">
@@ -80,32 +89,32 @@ const ServiceDetail = () => {
                   {service.price}
                 </span>
                 {service.promotion && (
-                  <span className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">
+                  <span className="px-3 py-1 text-sm font-semibold text-red-600 bg-red-100 rounded-full">
                     Oferta Limitada
                   </span>
                 )}
               </div>
             </div>
 
-            <div className="bg-white rounded-xl p-6 shadow-lg">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Descripción Completa</h3>
-              <p className="text-gray-600 leading-relaxed mb-6">
+            <div className="p-6 bg-white shadow-lg rounded-xl">
+              <h3 className="mb-4 text-xl font-bold text-gray-900">Descripción Completa</h3>
+              <p className="mb-6 leading-relaxed text-gray-600">
                 {service.description}
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+              <div className="grid grid-cols-1 gap-4 mb-6 sm:grid-cols-2">
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-green-50">
                   <Shield className="w-5 h-5 text-green-600" />
-                  <span className="text-green-700 font-medium">Garantía Incluida</span>
+                  <span className="font-medium text-green-700">Garantía Incluida</span>
                 </div>
-                <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-blue-50">
                   <Clock className="w-5 h-5 text-blue-600" />
-                  <span className="text-blue-700 font-medium">Instalación Rápida</span>
+                  <span className="font-medium text-blue-700">Instalación Rápida</span>
                 </div>
               </div>
 
               <div className="mb-6">
-                <h4 className="font-bold text-gray-900 mb-3">Lo que incluye:</h4>
+                <h4 className="mb-3 font-bold text-gray-900">Lo que incluye:</h4>
                 <div className="space-y-2">
                   {service.features.map((feature, index) => (
                     <motion.div
@@ -122,14 +131,14 @@ const ServiceDetail = () => {
                 </div>
               </div>
 
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-                <p className="text-green-700 font-semibold">
+              <div className="p-4 mb-6 border border-green-200 rounded-lg bg-green-50">
+                <p className="font-semibold text-green-700">
                   {service.availability}
                 </p>
               </div>
 
               <motion.button
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-8 rounded-xl font-bold text-lg hover:shadow-2xl transition-all duration-300"
+                className="w-full px-8 py-4 text-lg font-bold text-white transition-all duration-300 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl hover:shadow-2xl"
                 whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
               >

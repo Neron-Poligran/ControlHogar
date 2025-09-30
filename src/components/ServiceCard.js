@@ -3,6 +3,15 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+const resolveImg = (p) => {
+  if (!p) return '';
+  if (/^(https?:)?\/\//i.test(p)) return p;
+  const base = process.env.PUBLIC_URL || '';
+  const path = p.startsWith('/') ? p : `/${p}`;
+  return `${base}${path}`;
+};
+
+
 const ServiceCard = ({ service, index }) => {
   return (
     <motion.div
@@ -11,23 +20,23 @@ const ServiceCard = ({ service, index }) => {
       transition={{ duration: 0.6, delay: index * 0.1 }}
       viewport={{ once: true }}
       whileHover={{ y: -10 }}
-      className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group"
+      className="overflow-hidden transition-all duration-300 bg-white shadow-lg rounded-2xl hover:shadow-2xl group"
     >
       <div className="relative overflow-hidden">
         <motion.img
-          src={service.image}
+          src={resolveImg(service.image)}
           alt={service.name}
-          className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+          className="object-cover w-full h-48 transition-transform duration-500 group-hover:scale-110"
           whileHover={{ scale: 1.1 }}
         />
         {service.promotion && (
           <motion.div 
-            className="absolute top-4 right-4 bg-gradient-to-r from-red-500 to-pink-500 text-white px-3 py-1 rounded-full text-sm font-bold"
+            className="absolute px-3 py-1 text-sm font-bold text-white rounded-full top-4 right-4 bg-gradient-to-r from-red-500 to-pink-500"
             initial={{ scale: 0, rotate: -45 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <Star className="w-4 h-4 inline mr-1" />
+            <Star className="inline w-4 h-4 mr-1" />
             PROMOCIÓN
           </motion.div>
         )}
@@ -35,14 +44,14 @@ const ServiceCard = ({ service, index }) => {
 
       <div className="p-6">
         <motion.h3 
-          className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300"
+          className="mb-3 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-blue-600"
           whileHover={{ x: 5 }}
         >
           {service.name}
         </motion.h3>
 
         <motion.p 
-          className="text-2xl font-bold text-blue-600 mb-4"
+          className="mb-4 text-2xl font-bold text-blue-600"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -51,7 +60,7 @@ const ServiceCard = ({ service, index }) => {
         </motion.p>
 
         <motion.p 
-          className="text-gray-600 mb-4 line-clamp-2"
+          className="mb-4 text-gray-600 line-clamp-2"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
@@ -60,7 +69,7 @@ const ServiceCard = ({ service, index }) => {
         </motion.p>
 
         <motion.p 
-          className="text-sm text-green-600 font-semibold mb-6"
+          className="mb-6 text-sm font-semibold text-green-600"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
@@ -70,12 +79,12 @@ const ServiceCard = ({ service, index }) => {
 
         <Link to={`/servicio/${service.id}`}>
           <motion.button
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-xl font-semibold flex items-center justify-center gap-2 hover:shadow-lg transition-all duration-300"
+            className="flex items-center justify-center w-full gap-2 px-6 py-3 font-semibold text-white transition-all duration-300 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl hover:shadow-lg"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
             Ver Más
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
           </motion.button>
         </Link>
       </div>

@@ -1,24 +1,53 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Mail, Phone, Home, Heart } from 'lucide-react';
+import React from "react";
+import { motion } from "framer-motion";
+import { Mail, Phone, Home, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 
+const MotionLink = motion(Link);
+
+const isExternal = (href = "") => /^(https?:\/\/|mailto:|tel:)/i.test(href);
+
+const SmartLink = ({ href, children, className, ...motionProps }) => {
+  if (isExternal(href)) {
+    return (
+      <motion.a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={className}
+        {...motionProps}
+      >
+        {children}
+      </motion.a>
+    );
+  }
+  // Interno: respeta basename dinámico
+  return (
+    <MotionLink to={href || "/"} className={className} {...motionProps}>
+      {children}
+    </MotionLink>
+  );
+};
 
 const Footer = () => {
   const contactInfo = [
-    { icon: Mail, text: 'info@controlhogar.com', href: 'mailto:info@controlhogar.com' },
-    { icon: Phone, text: '+57 300 123 4567', href: 'tel:+573001234567' }
+    {
+      icon: Mail,
+      text: "info@controlhogar.com",
+      href: "mailto:info@controlhogar.com",
+    },
+    { icon: Phone, text: "+57 300 123 4567", href: "tel:+573001234567" },
   ];
 
   const socialLinks = [
-    { name: 'Facebook', href: '#' },
-    { name: 'Instagram', href: '#' },
-    { name: 'Twitter', href: '#' },
-    { name: 'LinkedIn', href: '#' }
+    { name: "Facebook", href: "#" },
+    { name: "Instagram", href: "#" },
+    { name: "Twitter", href: "#" },
+    { name: "LinkedIn", href: "#" },
   ];
 
   return (
-    <motion.footer 
+    <motion.footer
       className="text-white bg-gradient-to-br from-gray-900 to-gray-800"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
@@ -32,16 +61,16 @@ const Footer = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-          >       
-              <div className="flex items-center mb-4 justify-left">
-                <img
-                  src="/img/logo.png"
-                  alt="Logo ControlHogar"
-                  className="w-auto h-16"
-                />
-              </div>
+          >
+            <div className="flex items-center mb-4 justify-left">
+              <img
+                src={`${process.env.PUBLIC_URL}/img/logo.png`}
+                alt="Logo ControlHogar"
+                className="w-auto h-16"
+              />
+            </div>
             <p className="leading-relaxed text-gray-300">
-              Transformamos tu hogar en un espacio inteligente, cómodo y seguro. 
+              Transformamos tu hogar en un espacio inteligente, cómodo y seguro.
               Tecnología de vanguardia para mejorar tu calidad de vida.
             </p>
           </motion.div>
@@ -52,12 +81,14 @@ const Footer = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <h4 className="mb-6 text-xl font-semibold text-blue-400">Contacto</h4>
+            <h4 className="mb-6 text-xl font-semibold text-blue-400">
+              Contacto
+            </h4>
             <div className="space-y-4">
               {contactInfo.map((item, index) => {
                 const Icon = item.icon;
                 return (
-                  <motion.a
+                  <SmartLink
                     key={index}
                     href={item.href}
                     className="flex items-center gap-3 text-gray-300 transition-colors duration-300 hover:text-blue-400"
@@ -65,7 +96,7 @@ const Footer = () => {
                   >
                     <Icon className="w-5 h-5" />
                     {item.text}
-                  </motion.a>
+                  </SmartLink>
                 );
               })}
             </div>
@@ -77,10 +108,12 @@ const Footer = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
             viewport={{ once: true }}
           >
-            <h4 className="mb-6 text-xl font-semibold text-blue-400">Síguenos</h4>
+            <h4 className="mb-6 text-xl font-semibold text-blue-400">
+              Síguenos
+            </h4>
             <div className="flex flex-wrap gap-4">
               {socialLinks.map((social, index) => (
-                <motion.a
+                <SmartLink
                   key={index}
                   href={social.href}
                   className="px-4 py-2 text-sm font-medium transition-colors duration-300 bg-gray-700 rounded-lg hover:bg-blue-600"
@@ -88,13 +121,13 @@ const Footer = () => {
                   whileTap={{ scale: 0.95 }}
                 >
                   {social.name}
-                </motion.a>
+                </SmartLink>
               ))}
             </div>
           </motion.div>
         </div>
 
-        <motion.div 
+        <motion.div
           className="pt-8 mt-12 text-center border-t border-gray-700"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -102,7 +135,7 @@ const Footer = () => {
           viewport={{ once: true }}
         >
           <p className="flex items-center justify-center gap-2 text-gray-400">
-            © 2025 ControlHogar. Todos los derechos reservados. 
+            © 2025 ControlHogar. Todos los derechos reservados.
             <span className="flex items-center gap-1">
               Hecho con <Heart className="w-4 h-4 text-red-500" /> para tu hogar
             </span>

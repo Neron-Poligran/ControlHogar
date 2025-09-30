@@ -41,6 +41,15 @@ const Admin = () => {
   //   }
   // }, [navigate]);
 
+  const resolveImg = (p) => {
+  if (!p) return '';
+  if (/^(https?:)?\/\//i.test(p)) return p;
+  const base = process.env.PUBLIC_URL || '';
+  const path = p.startsWith('/') ? p : `/${p}`;
+  return `${base}${path}`;
+};
+
+
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
 
   useEffect(() => {
@@ -419,7 +428,7 @@ const Admin = () => {
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-3">
                               <img
-                                src={service.image}
+                                src={resolveImg(service.image)}
                                 alt={service.name}
                                 className="object-cover w-12 h-12 rounded-lg"
                               />

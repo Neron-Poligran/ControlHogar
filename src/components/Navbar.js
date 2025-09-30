@@ -29,9 +29,8 @@ const Navbar = () => {
 
           <Link to="/">
             <div className="flex items-center justify-center">
-              <img
-                src="/img/logo.png"
-                alt="Logo ControlHogar"
+              <img src={`${process.env.PUBLIC_URL}/img/logo.png`} 
+                alt="Logo ControlHogar" 
                 className="w-auto h-16"
               />
             </div>
