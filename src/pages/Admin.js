@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -34,13 +34,6 @@ const Admin = () => {
     features: [""],
   });
 
-  // useEffect(() => {
-  //   const isAuthenticated = localStorage.getItem('isAuthenticated');
-  //   if (!isAuthenticated) {
-  //     navigate('/login');
-  //   }
-  // }, [navigate]);
-
   const resolveImg = (p) => {
     if (!p) return "";
     if (/^(https?:)?\/\//i.test(p)) return p;
@@ -59,7 +52,7 @@ const Admin = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
-    navigate("/login");
+    window.location.href = (process.env.PUBLIC_URL || "") + "/";
   };
 
   const showMessage = (text, type = "success") => {
@@ -80,10 +73,6 @@ const Admin = () => {
       );
       showMessage("Servicio actualizado con éxito");
     } else {
-      // const newService = {
-      //   ...formData,
-      //   id: Math.max(...services.map(s => s.id)) + 1
-      // };
       const nextId = services.length
         ? Math.max(...services.map((s) => s.id)) + 1
         : 1;
@@ -192,13 +181,10 @@ const Admin = () => {
             return (
               <motion.button
                 key={item.id}
-                // onClick={() => setActiveTab(item.id)}
-
- onClick={() => {
-   setActiveTab(item.id);
-   if (!isDesktop) setSidebarOpen(false);
- }}
-
+                onClick={() => {
+                  setActiveTab(item.id);
+                  if (!isDesktop) setSidebarOpen(false);
+                }}
                 className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all duration-300 ${
                   activeTab === item.id
                     ? "bg-gradient-to-r from-blue-950 from-10%  to-lime-500 to-100% text-white"
