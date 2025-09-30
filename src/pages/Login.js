@@ -160,13 +160,28 @@ const Login = () => {
         </motion.div>
 
         <motion.div
+          className="mt-4 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.65 }}
+        >
+          <button
+            type="button"
+            onClick={() => navigate("/")}
+            className="text-sm font-medium text-gray-600 hover:text-gray-900"
+          >
+            ← Volver al inicio
+          </button>
+        </motion.div>
+
+        <motion.div
           className="p-4 mt-8 bg-blue-50 rounded-xl"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.7 }}
         >
           <p className="text-sm text-center text-blue-700">
-            <strong>Demo:</strong> Usuario: admin | Contraseña: admin123
+            Usuario: admin | Contraseña: admin123
           </p>
         </motion.div>
       </motion.div>
