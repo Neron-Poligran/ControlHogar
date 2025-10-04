@@ -348,7 +348,7 @@ const Admin = () => {
                       </div>
 
                       <input
-                        type="url"
+                        type="text"
                         placeholder="URL de la imagen"
                         value={formData.image}
                         onChange={(e) =>
