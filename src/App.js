@@ -25,33 +25,38 @@ const base =
         ""
       )
     : "";
-
+// Layout principal: incluye Navbar, animación de transición y Footer
 function Layout() {
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
+      <Navbar /> {/* Barra de navegación superior */}
       <main>
+        {/* Animación de transición entre páginas */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
         >
-          <Outlet />
+          <Outlet /> {/* Renderiza la página correspondiente a la ruta */}
         </motion.div>
       </main>
-      <Footer />
+      <Footer /> {/* Pie de página */}
     </div>
   );
 }
 
+// Componente principal App: define las rutas de la aplicación
 export default function App() {
   return (
     <BrowserRouter basename={base}>
       <Routes>
-        {/* Rutas públicas con layout */}
+        {/* Rutas públicas que usan el layout principal */}
         <Route element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="servicios" element={<Services />} />
+          {/* Página de inicio */}
+          <Route index element={<Home />} /> 
+          {/* Catálogo de servicios */}
+          <Route path="servicios" element={<Services />} />  
+            {/* Detalle de servicio */}
           <Route path="servicio/:id" element={<ServiceDetail />} />
         </Route>
 
@@ -60,7 +65,7 @@ export default function App() {
         <Route
           path="/admin"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute> {/* Protege la ruta admin, requiere autenticación */}
               <Admin />
             </ProtectedRoute>
           }
