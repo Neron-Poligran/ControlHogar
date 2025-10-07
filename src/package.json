@@ -1,12 +1,12 @@
 {
     "dependencies": {
-        "react": "^19.0.0",
-        "react-dom": "^19.0.0",
-        "react-scripts": "^5.0.0",
-        "framer-motion": "latest",
-        "lucide-react": "latest",
-        "react-router-dom": "latest"
+        "react": "^19.0.0", // Biblioteca principal para construir interfaces de usuario
+        "react-dom": "^19.0.0", // Permite renderizar componentes React en el DOM
+        "react-scripts": "^5.0.0", // Scripts y configuración para proyectos creados con Create React App
+        "framer-motion": "latest", // Librería para animaciones declarativas en React
+        "lucide-react": "latest", // Iconos SVG modernos y ligeros para React
+        "react-router-dom": "latest" // Enrutamiento dinámico para aplicaciones SPA en React
     },
-    "main": "/index.js",
-    "devDependencies": {}
+    "main": "/index.js", // Archivo principal de entrada de la aplicación
+    "devDependencies": {}  // Dependencias de desarrollo
 }
