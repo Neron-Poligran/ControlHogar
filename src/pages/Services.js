@@ -4,10 +4,12 @@ import { Search, Filter } from 'lucide-react';
 import ServiceCard from '../components/ServiceCard';
 import { servicesData } from '../data/services';
 
+// Componente principal Services: muestra el catálogo de servicios
 const Services = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white py-20">
       <div className="container mx-auto px-4">
+        {/* Encabezado animado con título y descripción */}
         <motion.div 
           className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
@@ -17,6 +19,7 @@ const Services = () => {
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Nuestros Servicios
           </h1>
+          {/* Línea decorativa animada */}
           <div className="w-24 h-1 bg-gradient-to-r from-blue-950 from-10%  to-lime-500 to-100% mx-auto mb-8"></div>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Soluciones integrales de domótica para transformar tu hogar en un espacio inteligente, 
@@ -24,6 +27,7 @@ const Services = () => {
           </p>
         </motion.div>
 
+        {/* Barra de búsqueda y botón de filtros */}
         <motion.div 
           className="flex flex-col md:flex-row gap-4 mb-12 max-w-2xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
@@ -47,13 +51,15 @@ const Services = () => {
             Filtros
           </motion.button>
         </motion.div>
-
+            
+        {/* Grid de tarjetas de servicios, cada una con animación y datos del servicio */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {servicesData.map((service, index) => (
             <ServiceCard key={service.id} service={service} index={index} />
           ))}
         </div>
 
+        {/* Sección final con llamada a la acción para contacto personalizado */}
         <motion.div 
           className="text-center mt-16"
           initial={{ opacity: 0, y: 30 }}
