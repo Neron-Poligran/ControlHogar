@@ -3,12 +3,16 @@ import { motion } from "framer-motion";
 import { Mail, Phone, Home, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 
+// MotionLink: versión animada del componente Link de React Router
 const MotionLink = motion(Link);
 
+// isExternal: función utilitaria para detectar enlaces externos (http, mailto, tel)
 const isExternal = (href = "") => /^(https?:\/\/|mailto:|tel:)/i.test(href);
 
+// SmartLink: componente que decide si renderizar un <a> externo o un <Link> interno, ambos animados
 const SmartLink = ({ href, children, className, ...motionProps }) => {
   if (isExternal(href)) {
+    // Enlace externo: abre en nueva pestaña
     return (
       <motion.a
         href={href}
@@ -21,7 +25,7 @@ const SmartLink = ({ href, children, className, ...motionProps }) => {
       </motion.a>
     );
   }
-  // Interno: respeta basename dinámico
+ // Enlace interno: usa React Router respetando basename
   return (
     <MotionLink to={href || "/"} className={className} {...motionProps}>
       {children}
@@ -29,7 +33,9 @@ const SmartLink = ({ href, children, className, ...motionProps }) => {
   );
 };
 
+// Componente principal Footer: pie de página animado y responsivo
 const Footer = () => {
+  // Información de contacto (íconos y enlaces)
   const contactInfo = [
     {
       icon: Mail,
@@ -39,6 +45,7 @@ const Footer = () => {
     { icon: Phone, text: "+57 300 123 4567", href: "tel:+573001234567" },
   ];
 
+  // Enlaces a redes sociales (pueden ser actualizados con URLs reales)
   const socialLinks = [
     { name: "Facebook", href: "#" },
     { name: "Instagram", href: "#" },
@@ -56,6 +63,7 @@ const Footer = () => {
     >
       <div className="container px-4 py-12 mx-auto">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          {/* Sección de marca y descripción */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -75,6 +83,7 @@ const Footer = () => {
             </p>
           </motion.div>
 
+          {/* Sección de contacto */}        
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -102,6 +111,7 @@ const Footer = () => {
             </div>
           </motion.div>
 
+          {/* Sección de redes sociales */}      
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -127,6 +137,7 @@ const Footer = () => {
           </motion.div>
         </div>
 
+        {/* Línea inferior con derechos y mensaje personalizado */}      
         <motion.div
           className="pt-8 mt-12 text-center border-t border-gray-700"
           initial={{ opacity: 0 }}
