@@ -1,13 +1,14 @@
+// Array principal de servicios domóticos disponibles en ControlHogar
 export const servicesData = [
   {
-    id: 1,
-    name: "Sistema de Iluminación Inteligente",
-    price: "Desde $500.000",
-    image: "/img/iluminacion.png",
-    description: "Control total de la iluminación de tu hogar desde tu smartphone. Incluye instalación de switches inteligentes, configuración de escenas automáticas y programación horaria.",
-    availability: "8 instalaciones disponibles este mes",
-    promotion: true,
-    features: ["Switches inteligentes", "Control por app", "Programación automática", "Integración con Alexa/Google"]
+    id: 1, // Identificador único del servicio
+    name: "Sistema de Iluminación Inteligente", // Nombre comercial
+    price: "Desde $500.000", // Precio base
+    image: "/img/iluminacion.png", // Ruta de la imagen representativa
+    description: "Control total de la iluminación de tu hogar desde tu smartphone. Incluye instalación de switches inteligentes, configuración de escenas automáticas y programación horaria.", // Descripción detallada
+    availability: "8 instalaciones disponibles este mes", // Disponibilidad actual
+    promotion: true, // Indica si el servicio está en promoción
+    features: ["Switches inteligentes", "Control por app", "Programación automática", "Integración con Alexa/Google"] // Lista de características principales
   },
   {
     id: 2,
