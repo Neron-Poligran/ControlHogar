@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Check, Star, Shield, Clock } from 'lucide-react';
 import { servicesData } from '../data/services';
 
+// resolveImg: función para obtener la URL correcta de la imagen del servicio
 const resolveImg = (p) => {
   if (!p) return '';
   if (/^(https?:)?\/\//i.test(p)) return p;
@@ -12,13 +13,16 @@ const resolveImg = (p) => {
   return `${base}${path}`;
 };
 
-
+// Componente principal ServiceDetail: muestra el detalle de un servicio seleccionado
 const ServiceDetail = () => {
+  // Obtiene el parámetro id de la URL
   const { id } = useParams();
+  // Busca el servicio correspondiente en el array de datos
   const service = servicesData.find(s => s.id === parseInt(id));
 
+  // Si no se encuentra el servicio, muestra mensaje de error y enlace de retorno
   if (!service) {
-    return (
+      return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <h2 className="mb-4 text-2xl font-bold text-gray-900">Servicio no encontrado</h2>
@@ -33,6 +37,7 @@ const ServiceDetail = () => {
   return (
     <div className="min-h-screen py-20 bg-gradient-to-br from-gray-50 to-white">
       <div className="container px-4 mx-auto">
+        {/* Enlace para volver al catálogo de servicios */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -47,8 +52,10 @@ const ServiceDetail = () => {
             Volver al Catálogo
           </Link>
         </motion.div>
-
+              
+        {/* Grid principal: imagen y detalles del servicio */}
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
+          {/* Sección de imagen con animación y etiqueta de promoción */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -74,6 +81,7 @@ const ServiceDetail = () => {
             </div>
           </motion.div>
 
+          {/* Sección de información y características del servicio */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -81,6 +89,7 @@ const ServiceDetail = () => {
             className="space-y-6"
           >
             <div>
+              {/* Título y precio del servicio */}
               <h1 className="mb-4 text-4xl font-bold text-gray-900">
                 {service.name}
               </h1>
@@ -88,6 +97,7 @@ const ServiceDetail = () => {
                 <span className="text-3xl font-bold text-blue-600">
                   {service.price}
                 </span>
+                {/* Etiqueta de oferta si está en promoción */}
                 {service.promotion && (
                   <span className="px-3 py-1 text-sm font-semibold text-red-600 bg-red-100 rounded-full">
                     Oferta Limitada
@@ -96,12 +106,14 @@ const ServiceDetail = () => {
               </div>
             </div>
 
+            {/* Descripción completa y beneficios destacados */}
             <div className="p-6 bg-white shadow-lg rounded-xl">
               <h3 className="mb-4 text-xl font-bold text-gray-900">Descripción Completa</h3>
               <p className="mb-6 leading-relaxed text-gray-600">
                 {service.description}
               </p>
 
+              {/* Beneficios visuales: garantía e instalación rápida */}
               <div className="grid grid-cols-1 gap-4 mb-6 sm:grid-cols-2">
                 <div className="flex items-center gap-3 p-3 rounded-lg bg-green-50">
                   <Shield className="w-5 h-5 text-green-600" />
@@ -113,6 +125,7 @@ const ServiceDetail = () => {
                 </div>
               </div>
 
+              {/* Lista de características incluidas en el servicio */}
               <div className="mb-6">
                 <h4 className="mb-3 font-bold text-gray-900">Lo que incluye:</h4>
                 <div className="space-y-2">
@@ -131,12 +144,14 @@ const ServiceDetail = () => {
                 </div>
               </div>
 
+              {/* Disponibilidad actual del servicio */}
               <div className="p-4 mb-6 border border-green-200 rounded-lg bg-green-50">
                 <p className="font-semibold text-green-700">
                   {service.availability}
                 </p>
               </div>
 
+              {/* Botón para solicitar cotización */}
               <motion.button
                 className="w-full px-8 py-4 text-lg font-bold text-white transition-all duration-300 bg-gradient-to-r from-blue-950 from-10%  to-lime-500 to-100% rounded-xl hover:shadow-2xl"
                 whileHover={{ scale: 1.02, y: -2 }}
