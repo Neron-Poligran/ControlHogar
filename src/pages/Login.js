@@ -3,16 +3,23 @@ import { motion } from "framer-motion";
 import { User, Lock, Eye, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+// Componente Login: formulario de acceso administrativo
 const Login = () => {
+  // Estado para los campos del formulario
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+  // Estado para mostrar/ocultar la contraseña
   const [showPassword, setShowPassword] = useState(false);
+  // Estado para mostrar mensajes de error
   const [error, setError] = useState("");
+  // Estado para mostrar animación de carga
   const [isLoading, setIsLoading] = useState(false);
+  // Hook para navegación programática
   const navigate = useNavigate();
 
+  // handleChange: actualiza los campos del formulario y limpia el error
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -21,17 +28,19 @@ const Login = () => {
     if (error) setError("");
   };
 
+  // handleSubmit: valida credenciales demo y navega al panel admin
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
 
+    // Simula verificación de credenciales con retardo
     setTimeout(() => {
       if (formData.username === "admin" && formData.password === "admin123") {
-        localStorage.setItem("isAuthenticated", "true");
-        navigate("/admin");
+        localStorage.setItem("isAuthenticated", "true"); // Marca autenticación
+        navigate("/admin"); // Redirige al panel admin
       } else {
-        setError("Usuario o contraseña incorrectos");
+        setError("Usuario o contraseña incorrectos"); // Muestra error
       }
       setIsLoading(false);
     }, 1000);
@@ -39,12 +48,14 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+      {/* Contenedor animado del formulario */}
       <motion.div
         className="w-full max-w-md p-8 shadow-2xl bg-white/80 backdrop-blur-xl rounded-3xl"
         initial={{ opacity: 0, y: 50, scale: 0.9 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.8 }}
       >
+        {/* Encabezado animado con icono y título */}
         <motion.div
           className="mb-8 text-center"
           initial={{ opacity: 0, y: -20 }}
@@ -62,7 +73,9 @@ const Login = () => {
           </p>
         </motion.div>
 
+        {/* Formulario de login */}
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Campo usuario animado */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -85,6 +98,7 @@ const Login = () => {
             </div>
           </motion.div>
 
+          {/* Campo contraseña animado con botón para mostrar/ocultar */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -104,6 +118,7 @@ const Login = () => {
                 placeholder="Ingresa tu contraseña"
                 required
               />
+              {/* Botón para alternar visibilidad de la contraseña */}
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
@@ -114,6 +129,7 @@ const Login = () => {
             </div>
           </motion.div>
 
+          {/* Mensaje de error animado si las credenciales son incorrectas */}
           {error && (
             <motion.div
               className="flex items-center gap-2 p-3 text-red-700 border border-red-200 bg-red-50 rounded-xl"
@@ -126,6 +142,7 @@ const Login = () => {
             </motion.div>
           )}
 
+          {/* Botón de enviar animado, muestra estado de carga */}
           <motion.button
             type="submit"
             disabled={isLoading}
@@ -144,6 +161,7 @@ const Login = () => {
           </motion.button>
         </form>
 
+        {/* Enlace animado para recuperar contraseña */}
         <motion.div
           className="mt-6 text-center"
           initial={{ opacity: 0 }}
@@ -159,6 +177,7 @@ const Login = () => {
           </button>
         </motion.div>
 
+        {/* Enlace animado para volver al inicio */}
         <motion.div
           className="mt-4 text-center"
           initial={{ opacity: 0 }}
@@ -174,6 +193,7 @@ const Login = () => {
           </button>
         </motion.div>
 
+        {/* Mensaje informativo con credenciales demo */}
         <motion.div
           className="p-4 mt-8 bg-blue-50 rounded-xl"
           initial={{ opacity: 0 }}
