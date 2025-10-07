@@ -15,7 +15,9 @@ import {
 } from "lucide-react";
 import { servicesData } from "../data/services";
 
+// Componente principal del panel administrativo
 const Admin = () => {
+  // Estado: lista de servicios, pestaña activa, formulario, edición, sidebar y mensajes
   const [services, setServices] = useState(servicesData);
   const [activeTab, setActiveTab] = useState("dashboard");
   const [showForm, setShowForm] = useState(false);
@@ -24,6 +26,7 @@ const Admin = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
+  // Estado para el formulario de servicio
   const [formData, setFormData] = useState({
     name: "",
     price: "",
@@ -34,6 +37,7 @@ const Admin = () => {
     features: [""],
   });
 
+  // resolveImg: función para obtener la URL correcta de la imagen
   const resolveImg = (p) => {
     if (!p) return "";
     if (/^(https?:)?\/\//i.test(p)) return p;
@@ -42,28 +46,34 @@ const Admin = () => {
     return `${base}${path}`;
   };
 
+  // Estado para detectar si la vista es desktop
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
-
+  
+  // useEffect: actualiza el estado isDesktop al cambiar el tamaño de la ventana
   useEffect(() => {
     const onResize = () => setIsDesktop(window.innerWidth >= 1024);
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
+  // useEffect: actualiza el estado isDesktop al cambiar el tamaño de la ventana
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
     window.location.href = (process.env.PUBLIC_URL || "") + "/";
   };
 
+  // showMessage: muestra alertas temporales en el panel
   const showMessage = (text, type = "success") => {
     setMessage({ text, type });
     setTimeout(() => setMessage(null), 3000);
   };
 
+  // handleSubmit: crea o edita servicios (CRUD en memoria)
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (editingService) {
+      // Actualiza el servicio existente
       setServices(
         services.map((service) =>
           service.id === editingService.id
@@ -73,6 +83,7 @@ const Admin = () => {
       );
       showMessage("Servicio actualizado con éxito");
     } else {
+      // Crea un nuevo servicio
       const nextId = services.length
         ? Math.max(...services.map((s) => s.id)) + 1
         : 1;
@@ -85,6 +96,7 @@ const Admin = () => {
     resetForm();
   };
 
+  // resetForm: limpia el formulario y estado de edición
   const resetForm = () => {
     setFormData({
       name: "",
@@ -99,12 +111,14 @@ const Admin = () => {
     setEditingService(null);
   };
 
+  // handleEdit: carga datos de servicio para editar
   const handleEdit = (service) => {
     setFormData(service);
     setEditingService(service);
     setShowForm(true);
   };
 
+  // handleDelete: elimina un servicio tras confirmación
   const handleDelete = (id) => {
     if (window.confirm("¿Estás seguro de eliminar este servicio?")) {
       setServices(services.filter((service) => service.id !== id));
@@ -112,6 +126,7 @@ const Admin = () => {
     }
   };
 
+  // addFeature: agrega una característica al servicio
   const addFeature = () => {
     setFormData({
       ...formData,
@@ -119,6 +134,7 @@ const Admin = () => {
     });
   };
 
+  // updateFeature: actualiza el valor de una característica
   const updateFeature = (index, value) => {
     const newFeatures = [...formData.features];
     newFeatures[index] = value;
@@ -128,6 +144,7 @@ const Admin = () => {
     });
   };
 
+  // removeFeature: elimina una característica del servicio
   const removeFeature = (index) => {
     setFormData({
       ...formData,
@@ -135,6 +152,7 @@ const Admin = () => {
     });
   };
 
+  // sidebarItems: pestañas del panel lateral
   const sidebarItems = [
     { id: "dashboard", name: "Dashboard", icon: LayoutDashboard },
     { id: "services", name: "Servicios", icon: Settings },
@@ -143,6 +161,7 @@ const Admin = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
+      {/* Sidebar animado con pestañas y botón de logout */}
       <motion.div
         className={`bg-white shadow-lg ${
           sidebarOpen ? "w-64" : "w-16"
@@ -157,6 +176,7 @@ const Admin = () => {
               <Settings className="w-6 h-6 text-white" />
             </div>
 
+            {/* Botón para cerrar el sidebar en móvil */}
             {(sidebarOpen || isDesktop) && (
               <h2 className="text-xl font-bold text-gray-900">Admin Panel</h2>
             )}
@@ -175,6 +195,7 @@ const Admin = () => {
           )}
         </div>
 
+        {/* Navegación lateral con pestañas animadas */}
         <nav className="p-4 space-y-2">
           {sidebarItems.map((item) => {
             const Icon = item.icon;
@@ -202,6 +223,7 @@ const Admin = () => {
           })}
         </nav>
 
+        {/* Botón de cerrar sesión */}
         <div className="absolute bottom-4 left-2 right-1">
           <motion.button
             onClick={handleLogout}
@@ -214,14 +236,17 @@ const Admin = () => {
         </div>
       </motion.div>
 
+      {/* Contenido principal del panel */}
       <div className="flex-1 ml-16 lg:ml-0">
         <div className="flex items-center justify-between p-4 bg-white shadow-sm">
+          {/* Botón para abrir/cerrar el sidebar en móvil */}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="p-2 rounded-lg lg:hidden hover:bg-gray-100"
           >
             <Menu className="w-6 h-6" />
           </button>
+          {/* Título dinámico según la pestaña activa */}
           <h1 className="text-2xl font-bold text-gray-900">
             {activeTab === "dashboard" && "Dashboard"}
             {activeTab === "services" && "Gestión de Servicios"}
@@ -230,6 +255,7 @@ const Admin = () => {
         </div>
 
         <div className="p-6">
+          {/* Mensajes de éxito o error animados */}
           <AnimatePresence>
             {message && (
               <motion.div
@@ -253,6 +279,7 @@ const Admin = () => {
             )}
           </AnimatePresence>
           <AnimatePresence mode="wait">
+            {/* Sección Dashboard: estadísticas generales */}
             {activeTab === "dashboard" && (
               <motion.div
                 key="tab-dashboard"
@@ -290,6 +317,7 @@ const Admin = () => {
               </motion.div>
             )}
 
+            {/* Sección de gestión de servicios: CRUD */}
             {activeTab === "services" && (
               <motion.div
                 key="tab-services"
@@ -302,6 +330,7 @@ const Admin = () => {
                   <h2 className="text-xl font-bold text-gray-900">
                     Lista de Servicios
                   </h2>
+                  {/* Botón para abrir el formulario de nuevo servicio */}
                   <motion.button
                     onClick={() => setShowForm(true)}
                     className="flex items-center gap-2 px-6 py-3 font-semibold text-white transition-all duration-300 bg-gradient-to-r from-blue-950 from-10%  to-lime-500 to-100% rounded-xl hover:shadow-lg"
@@ -313,6 +342,7 @@ const Admin = () => {
                   </motion.button>
                 </div>
 
+                {/* Formulario para crear o editar servicios */}
                 {showForm && (
                   <motion.div
                     className="p-6 mb-6 bg-white shadow-lg rounded-2xl"
@@ -325,6 +355,7 @@ const Admin = () => {
                     </h3>
                     <form onSubmit={handleSubmit} className="space-y-4">
                       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        {/* Campo nombre */}
                         <input
                           type="text"
                           placeholder="Nombre del servicio"
@@ -335,6 +366,7 @@ const Admin = () => {
                           className="p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                           required
                         />
+                        {/* Campo precio */}
                         <input
                           type="text"
                           placeholder="Precio (ej: Desde $500.000)"
@@ -347,6 +379,7 @@ const Admin = () => {
                         />
                       </div>
 
+                      {/* Campo imagen */}
                       <input
                         type="text"
                         placeholder="URL de la imagen"
@@ -358,6 +391,7 @@ const Admin = () => {
                         required
                       />
 
+                      {/* Campo descripción */}
                       <textarea
                         placeholder="Descripción del servicio"
                         value={formData.description}
@@ -371,6 +405,7 @@ const Admin = () => {
                         required
                       />
 
+                      {/* Campo disponibilidad */}
                       <input
                         type="text"
                         placeholder="Disponibilidad (ej: 5 instalaciones disponibles)"
@@ -385,6 +420,7 @@ const Admin = () => {
                         required
                       />
 
+                      {/* Checkbox de promoción */}
                       <div className="flex items-center gap-2">
                         <input
                           type="checkbox"
@@ -406,6 +442,7 @@ const Admin = () => {
                         </label>
                       </div>
 
+                      {/* Lista de características dinámicas */}
                       <div>
                         <label className="block mb-2 font-medium text-gray-700">
                           Características:
@@ -421,6 +458,7 @@ const Admin = () => {
                               placeholder="Característica del servicio"
                               className="flex-1 p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
+                            {/* Botón para eliminar característica */}
                             {formData.features.length > 1 && (
                               <button
                                 type="button"
@@ -432,6 +470,7 @@ const Admin = () => {
                             )}
                           </div>
                         ))}
+                        {/* Botón para agregar característica */}
                         <button
                           type="button"
                           onClick={addFeature}
@@ -441,6 +480,7 @@ const Admin = () => {
                         </button>
                       </div>
 
+                      {/* Botones de acción del formulario */}
                       <div className="flex gap-4">
                         <button
                           type="submit"
@@ -460,6 +500,7 @@ const Admin = () => {
                   </motion.div>
                 )}
 
+                {/* Tabla de servicios con acciones de editar y eliminar */}
                 <div className="overflow-hidden bg-white shadow-lg rounded-2xl">
                   <div className="overflow-x-auto">
                     <table className="w-full">
@@ -516,6 +557,7 @@ const Admin = () => {
                             </td>
                             <td className="px-6 py-4">
                               <div className="flex gap-2">
+                                {/* Botón para editar servicio */}
                                 <motion.button
                                   onClick={() => handleEdit(service)}
                                   className="p-2 text-blue-600 transition-colors duration-300 rounded-lg hover:bg-blue-50"
@@ -524,6 +566,7 @@ const Admin = () => {
                                 >
                                   <Edit className="w-4 h-4" />
                                 </motion.button>
+                                {/* Botón para eliminar servicio */}
                                 <motion.button
                                   onClick={() => handleDelete(service.id)}
                                   className="p-2 text-red-600 transition-colors duration-300 rounded-lg hover:bg-red-50"
@@ -543,6 +586,7 @@ const Admin = () => {
               </motion.div>
             )}
 
+            {/* Sección de gestión de usuarios (placeholder) */}
             {activeTab === "users" && (
               <motion.div
                 key="tab-users"
