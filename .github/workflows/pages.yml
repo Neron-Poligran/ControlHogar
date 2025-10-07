@@ -1,43 +1,43 @@
-name: Deploy CRA to GitHub Pages
+name: Deploy CRA to GitHub Pages # Nombre del workflow, despliega la app React en GitHub Pages
 
-on:
-  push:
+on: # Sección de activadores del workflow
+  push: # Se ejecuta cuando hay un push en la rama main
     branches: [ main ]
-  workflow_dispatch:
+  workflow_dispatch: # Permite ejecutar el workflow manualmente desde GitHub
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+permissions: # Permite ejecutar el workflow manualmente desde GitHub
+  contents: read # Permite ejecutar el workflow manualmente desde GitHub
+  pages: write # Permite publicar en GitHub Pages
+  id-token: write # Permite generar tokens de identidad para autenticación
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
+concurrency: # Controla la concurrencia de ejecuciones
+  group: "pages" # Agrupa las ejecuciones bajo el nombre "pages"
+  cancel-in-progress: true # Cancela ejecuciones anteriores si hay una nueva en curso
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+jobs: # Sección principal de trabajos (equivalente a funciones en workflows)
+  build: # Sección principal de trabajos (equivalente a funciones en workflows)
+    runs-on: ubuntu-latest # Utiliza una máquina virtual Ubuntu
+    steps: # Pasos para construir y preparar los archivos
+      - uses: actions/checkout@v4 # Clona el repositorio (función de GitHub Actions)
+      - uses: actions/setup-node@v4 # Configura Node.js en la VM
         with:
-          node-version: '20'
-      - run: npm ci
-      - run: npm run build
-      - name: SPA 404 fallback
+          node-version: '20' # Especifica la versión de Node.js
+      - run: npm ci # Instala dependencias de npm
+      - run: npm run build # Compila la aplicación React
+      - name: SPA 404 fallback # Paso clave para soporte de rutas en aplicaciones SPA
         run: |
           cp build/index.html build/404.html
-          touch build/.nojekyll
-      - uses: actions/upload-pages-artifact@v3
+          touch build/.nojekyll 
+      - uses: actions/upload-pages-artifact@v3 # Sube los archivos generados para el despliegue
         with:
-          path: ./build
+          path: ./build # Carpeta que contiene los archivos listos para publicar
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
+  deploy: # Trabajo encargado de desplegar la aplicación en GitHub Pages
+    needs: build # Depende de que el trabajo "build" termine correctamente
+    runs-on: ubuntu-latest # Utiliza una máquina virtual Ubuntu
     environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      name: github-pages # Nombre del entorno de despliegue
+      url: ${{ steps.deployment.outputs.page_url }} # URL de la página publicada (output de la acción de despliegue)
+    steps: # Pasos para desplegar la aplicación
+      - id: deployment 
+        uses: actions/deploy-pages@v4 # Acción que realiza el despliegue en GitHub Pages
