@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Menu, X, Home, Settings, User } from 'lucide-react';
+import { Menu, X, Home, Settings, User, Package } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 // Componente Navbar: barra de navegación principal
@@ -13,7 +13,7 @@ const Navbar = () => {
   // Elementos de navegación: nombre, ruta y icono
   const navItems = [
     { name: 'Inicio', path: '/', icon: Home },
-    { name: 'Servicios', path: '/servicios', icon: Settings },
+    { name: 'Servicios', path: '/servicios', icon: Package  },
     { name: 'Login', path: '/login', icon: User }
   ];
 

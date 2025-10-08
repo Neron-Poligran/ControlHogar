@@ -5,25 +5,27 @@ import { Link } from 'react-router-dom';
 
 // Componente principal Hero: carrusel animado de la landing page
 const Hero = () => {
+  const base = process.env.PUBLIC_URL || '';
+
   // Estado para el slide actual del carrusel
   const [currentSlide, setCurrentSlide] = useState(0);
 
   // Array de slides con imagen, título, subtítulo y descripción
   const slides = [
     {
-      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=600&fit=crop",
+      image: `${base}/img/slider-1.png`,
       title: "Tu Hogar Inteligente Te Espera",
       subtitle: "Controla todo desde tu smartphone",
       description: "Iluminación, seguridad, clima y más en la palma de tu mano"
     },
     {
-      image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=1200&h=600&fit=crop",
+      image: `${base}/img/slider-2.png`,
       title: "Seguridad de Última Generación",
       subtitle: "Protege lo que más amas",
       description: "Videovigilancia HD y alertas en tiempo real las 24 horas"
     },
     {
-      image: "https://images.unsplash.com/photo-1545259741-2ea3ebf61fa0?w=1200&h=600&fit=crop",
+      image: `${base}/img/slider-3.png`,
       title: "Eficiencia Energética Inteligente",
       subtitle: "Ahorra mientras vives mejor",
       description: "Sistemas automatizados que optimizan el consumo de energía"
